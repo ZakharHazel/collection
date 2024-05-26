@@ -71,9 +71,11 @@ def add_collection(template):
     Subcat = Subcategory.query.all()
     if request.method == 'POST':
         if request.form['action'] == 'add':
-            file = request.files['img']
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD'], filename))
+            filename = None
+            if request.files['img'] == None:
+                file = request.files['img']
+                filename = secure_filename(file.filename)
+                file.save(os.path.join(app.config['UPLOAD'], filename))
             cat = Category.query.filter_by(id=request.form['Subcategory']).first()
             upload = Сollection(image=filename, id_Category=cat.id, id_Subcategory=request.form['Subcategory'],
                                 Year=request.form['Year'], Description=request.form['Description'])
