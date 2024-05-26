@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block body %}
+    <form method="post">
+        <div class="container col-12">
+            <br>
+            <button class="w-100 btn btn-primary btn-lg" type="submit" name="action" value="add">Добавить в коллекцию</button>
+            <br>
+            <table class="ui very basic collapsing celled table">
+                <thead>
+                <tr>
+                    <th>Фото</th>
+                    <th>Категория</th>
+                    <th>Подкатегория</th>
+                    <th>Год</th>
+                    <th>Описание</th>
+                    <th> </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for n in coll %}
+                    <tr>
+
+                        <td>
+                            <img src="{{ n.image }}" height="75" class="ui mini rounded image">
+                        </td>
+                        <td>
+                            {{n.id_Category}}
+                        </td>
+                        <td>
+                            {{n.id_Subcategory}}
+                        </td>
+                        <td>
+                            {{n.Year}}
+                        </td>
+                        <td>
+                            {{n.Description}}
+                        </td>
+                        <td>
+                            <a class="w-100 btn btn-primary btn-lg" href="/collection/{{ n.id }}/update">Изменить</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </form>
+{% endblock %}

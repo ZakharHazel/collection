@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block body %}
+    <div class="container col-8">
+        <br>
+        <h4 class="mb-3">Добавление категории</h4>
+        <form method="post">
+            <div class="row g-3">
+                <div class="col-sm-12">
+                    <label class="form-label">Название</label>
+                    <input name="cat_name" type="text" class="form-control" placeholder="Название" value="" required="">
+                </div>
+            </div>
+            <hr class="my-4">
+            <button name="action" value="add" class="w-100 btn btn-primary btn-lg" type="submit">Добавить категорию</button>
+        </form>
+    </div>
+{% endblock %}
+

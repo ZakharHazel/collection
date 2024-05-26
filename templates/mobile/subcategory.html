@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block body %}
+    <form method="post">
+        <div class="container col-8">
+        <br>
+            <button class="w-100 btn btn-primary btn-lg" type="submit" name="action" value="add">Добавить в коллекцию</button>
+            <br>
+            <table class="ui very basic collapsing celled table">
+                <thead>
+                <tr>
+                    <th>id</th>
+                    <th>Категория</th>
+                    <th>Подкатегория</th>
+                    <th> </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for n in Subcat %}
+                    <tr>
+                        <td>
+                            {{ n.id }}
+                        </td>
+                        <td>
+                            {{n.id_Category}}
+                        </td>
+                        <td>
+                            {{n.name}}
+                        </td>
+                        <td>
+                            <a class="w-100 btn btn-primary btn-lg" href="/subcategory/{{ n.id }}/update">Изменить</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </form>
+
+{% endblock %}

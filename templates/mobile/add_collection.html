@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block body %}
+    <form enctype="multipart/form-data"  method="post">
+        <div class="container col-8">
+            <br>
+            <h4 class="mb-3">Добавление экземпляра в коллекцию</h4>
+            <div class="row g-3">
+
+                <div class="col-sm-6">
+                    <label for="country" class="form-label">Подкатегория</label>
+                    <select name="Subcategory" class="form-select" required="">
+                        {% for n in Subcat %}
+                            <option value="{{ n.id }}">{{ n.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="invalid-feedback">
+                        Выберете подкатегорию
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <label class="form-label">Год</label>
+                    <input name="Year" type="text" class="form-control" placeholder="Год">
+                    <div class="invalid-feedback">
+                        Please enter your shipping address.
+                    </div>
+                </div>
+
+                <div class="col-sm-6">
+                    <label for="country" class="form-label">Фото</label>
+                    <input name="img" type="file" class="form-control">
+                </div>
+
+                <div class="col-sm-6">
+                    <label class="form-label">Описание</label>
+                    <input name="Description" type="text" class="form-control" placeholder="Описание">
+                    <div class="invalid-feedback">
+                        Please enter your shipping address.
+                    </div>
+                </div>
+
+            </div>
+            <hr class="my-4">
+            <button name="action" value="add" class="w-100 btn btn-primary btn-lg" type="submit">Добавить в коллекцию</button>
+        </div>
+    </form>
+{% endblock %}
