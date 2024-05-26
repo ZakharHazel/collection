@@ -71,7 +71,7 @@ def add_collection(template):
     Subcat = Subcategory.query.all()
     if request.method == 'POST':
         if request.form['action'] == 'add':
-            filename = None
+            filename = Base.jpg
             if request.files['img'] == None:
                 file = request.files['img']
                 filename = secure_filename(file.filename)
@@ -250,4 +250,4 @@ def update_subcategory(template, id):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='192.168.0.5')
