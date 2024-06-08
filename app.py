@@ -49,8 +49,9 @@ def index():
 @app.route('/collection', methods=['POST', 'GET'])
 @mobile_template("{mobile/}collection.html")
 def collection(template):
+    Sub='-'
     coll = Сollection.query.all()
-    Categ = Category.query.all()
+    Subcat = Subcategory.query.order_by(Subcategory.name).all()
     for n in coll:
         n.image = os.path.join(app.config['UPLOAD'], n.image)
     for n in coll:
@@ -61,23 +62,27 @@ def collection(template):
     if request.method == 'POST':
         if request.form['action'] == 'add':
             return redirect('/collection/add')
+        elif request.form['action'] == 'find':
+            collec = Сollection.query.filter_by(id_Subcategory=request.form['Subcategory']).all()
+            return render_template(template, bl=Sub, coll=collec, Subcat=Subcat)
     else:
-        return render_template(template, coll=coll, Categ=Categ)
+        return render_template(template,bl=Sub, coll=coll, Subcat=Subcat)
 
 
 @app.route('/collection/add', methods=['POST', 'GET'])
 @mobile_template("{mobile/}add_collection.html")
 def add_collection(template):
-    Subcat = Subcategory.query.all()
+    Subcat = Subcategory.query.order_by(Subcategory.name).all()
     if request.method == 'POST':
         if request.form['action'] == 'add':
-            filename = 'Base.jpg'
-            if request.files['img'] == None:
+            try:
                 file = request.files['img']
                 filename = secure_filename(file.filename)
                 file.save(os.path.join(app.config['UPLOAD'], filename))
-            cat = Category.query.filter_by(id=request.form['Subcategory']).first()
-            upload = Сollection(image=filename, id_Category=cat.id, id_Subcategory=request.form['Subcategory'],
+            except:
+                filename = 'Base.jpg'
+            cat = Subcategory.query.filter_by(id=request.form['Subcategory']).first()
+            upload = Сollection(image=filename, id_Category=cat.id_Category, id_Subcategory=request.form['Subcategory'],
                                 Year=request.form['Year'], Description=request.form['Description'])
             try:
                 db.session.add(upload)
@@ -95,18 +100,20 @@ def add_collection(template):
 def update_collection(
         template, id):
     coll = Сollection.query.filter_by(id=id).first()
-    Subcat = Subcategory.query.all()
+    Subcat = Subcategory.query.order_by(Subcategory.name).all()
     Cat = Category.query.all()
 
     if request.method == 'POST':
         if request.form['action'] == 'update':
-            if request.files['img'] != None:
+            try:
                 file = request.files['img']
                 filename = secure_filename(file.filename)
                 file.save(os.path.join(app.config['UPLOAD'], filename))
-                coll.image = filename
-            cat = Subcategory.query.filter_by(id=request.form['Subcategory']).first().id_Category
-            coll.id_Category = cat
+                coll.image=filename
+            except:
+                pass
+            cat = Subcategory.query.filter_by(id=request.form['Subcategory']).first()
+            coll.id_Category = cat.id_Category
             coll.id_Subcategory = request.form['Subcategory']
             coll.Year = request.form['Year']
             coll.Description = request.form['Description']
@@ -204,7 +211,7 @@ def subcategory(template):
 @app.route('/subcategory/add', methods=['POST', 'GET'])
 @mobile_template("{mobile/}add_subcategory.html")
 def add_subcategory(template):
-    Cat = Category.query.all()
+    Cat = Category.query.order_by(Category.name).all()
     if request.method == 'POST':
         if request.form['action'] == 'add':
             Subcat = Subcategory(name=request.form['sub_name'], id_Category=request.form['selCat'])

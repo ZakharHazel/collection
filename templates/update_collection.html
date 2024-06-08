@@ -5,13 +5,13 @@
             <br>
             <div class="row g-3">
                 <div class="col-sm-12">
-                    <img src="{{ coll.filename }}" class="ui mini rounded image">
+                    <img height="150" src="/static/uploads/{{ coll.image }}" class="ui mini rounded image">
                 </div>
                 <div class="col-sm-6">
                     <label for="country" class="form-label">Подкатегория</label>
-                    <select name="Subcategory" class="form-select" required="">
+                    <select name="Subcategory" class="form-select" required="" >
                         {% for n in Subcat %}
-                            <option value="{{ n.id }}">{{ n.name }}</option>
+                            <option value="{{ n.id }}" {% if (n.id==coll.id_Subcategory)%} selected {% endif %}>{{ n.name }}</option>
                         {% endfor %}
                     </select>
                     <div class="invalid-feedback">
