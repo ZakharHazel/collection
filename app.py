@@ -5,6 +5,7 @@ from flask_mobility import Mobility
 from flask_mobility.decorators import mobile_template
 from werkzeug.utils import secure_filename
 
+# Настройка переменных и конфигурации приложения
 upload_folder = os.path.join('static', 'uploads')
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
 app = Flask(__name__)
@@ -22,17 +23,20 @@ def allowed_file(filename):
 
 
 class Subcategory(db.Model):
+    # Таблица с подкатегориями
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     id_Category = db.Column(db.Integer, nullable=False)
     name = db.Column(db.String(30), nullable=False)
 
 
 class Category(db.Model):
+    # Таблица с категориями
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     name = db.Column(db.String(30), nullable=False)
 
 
 class Сollection(db.Model):
+    # Таблица с экземпляроми коллекции
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     image = db.Column(db.String(50), nullable=True)
     id_Category = db.Column(db.Integer, nullable=False)
@@ -49,6 +53,7 @@ def index():
 @app.route('/collection', methods=['POST', 'GET'])
 @mobile_template("{mobile/}collection.html")
 def collection(template):
+    # Главная страница с отображением коллекции
     Sub='-'
     coll = Сollection.query.all()
     Subcat = Subcategory.query.order_by(Subcategory.name).all()
@@ -72,6 +77,7 @@ def collection(template):
 @app.route('/collection/add', methods=['POST', 'GET'])
 @mobile_template("{mobile/}add_collection.html")
 def add_collection(template):
+    # Страница для добавления нового экземпляра
     Subcat = Subcategory.query.order_by(Subcategory.name).all()
     if request.method == 'POST':
         if request.form['action'] == 'add':
@@ -97,8 +103,8 @@ def add_collection(template):
 
 @app.route('/collection/<int:id>/update', methods=['POST', 'GET'])
 @mobile_template("{mobile/}update_collection.html")
-def update_collection(
-        template, id):
+def update_collection(template, id):
+    # Страница редактирования экземпляра коллекции
     coll = Сollection.query.filter_by(id=id).first()
     Subcat = Subcategory.query.order_by(Subcategory.name).all()
     Cat = Category.query.all()
@@ -137,6 +143,7 @@ def update_collection(
 @app.route('/category', methods=['POST', 'GET'])
 @mobile_template("{mobile/}category.html")
 def category(template):
+    # Страница категорий
     Cat = Category.query.all()
 
     if request.method == 'POST':
@@ -149,6 +156,7 @@ def category(template):
 @app.route('/category/add', methods=['POST', 'GET'])
 @mobile_template("{mobile/}add_category.html")
 def add_category(template):
+    # Страница добавления новой категории
     if request.method == 'POST':
         if request.form['action'] == 'add':
             Cat = Category(name=request.form['cat_name'])
@@ -165,6 +173,7 @@ def add_category(template):
 @app.route('/category/<int:id>/update', methods=['POST', 'GET'])
 @mobile_template("{mobile/}update_category.html")
 def update_category(template, id):
+    # Страница редактирования категории
     Cat = Category.query.filter_by(id=id).first()
 
     if request.method == 'POST':
@@ -196,6 +205,7 @@ def update_category(template, id):
 @app.route('/subcategory', methods=['POST', 'GET'])
 @mobile_template("{mobile/}subcategory.html")
 def subcategory(template):
+    # Страница подкатегорий
     Subcat = Subcategory.query.all()
     for n in Subcat:
         cat = Category.query.filter_by(id=n.id_Category).first()
@@ -211,6 +221,7 @@ def subcategory(template):
 @app.route('/subcategory/add', methods=['POST', 'GET'])
 @mobile_template("{mobile/}add_subcategory.html")
 def add_subcategory(template):
+    # Страница добавления подкатегории
     Cat = Category.query.order_by(Category.name).all()
     if request.method == 'POST':
         if request.form['action'] == 'add':
@@ -228,6 +239,7 @@ def add_subcategory(template):
 @app.route('/subcategory/<int:id>/update', methods=['POST', 'GET'])
 @mobile_template("{mobile/}update_subcategory.html")
 def update_subcategory(template, id):
+    # Страница редактирования под категории
     Cat = Category.query.all()
     Subcat = Subcategory.query.filter_by(id=id).first()
     if request.method == 'POST':
